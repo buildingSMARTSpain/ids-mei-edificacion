@@ -1,0 +1,358 @@
+<ids:ids xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://standards.buildingsmart.org/IDS http://standards.buildingsmart.org/IDS/1.0/ids.xsd" xmlns:ids="http://standards.buildingsmart.org/IDS">
+  <!--IDS revisado, corregido y auditado por buildingSMART Spain.-->
+  <!--Rev S2-0500 (2026-07-10). Correcciones tras auditoria con IDS-Audit-tool oficial de bSI (8 errores en 0400):
+      - Error 103 (x4): nombres de atributo en MAYUSCULAS corregidos a PascalCase de IFC4 (NAME->Name, GLOBALID->GlobalId, OBJECTTYPE->ObjectType) en specs 3.3, 3.4, 3.5, 4.1. Sin esta correccion, esas comprobaciones fallaban porque el atributo no existia con ese nombre.
+      - Error 201 (x2): aplicabilidad IFCELEMENT (tipo abstracto, no expandido por el motor -> 0 objetos) sustituida por enumeracion de subtipos concretos en specs 3.6 (clasificacion) y 4.7.1 (material), que son el nucleo del MEI.
+      - Error 202 (x1): anadido dataType=IFCLABEL a la propiedad opcional de la spec 4.8.-->
+  <!--Rev S3-0400 (2026-06-03). Cambios sobre 0300:
+      (a) Specs 4.3/4.4/4.5: el export habia perdido el nombre de la propiedad (baseName vacio) y arrastraba un dataType erroneo (IFCABSORBEDDOSEMEASURE). Corregido: LoadBearing e IsExternal como IFCBOOLEAN, FireRating como IFCLABEL; requisito = PRESENCIA (sin valor fijo, conforme al MEI). En 4.5 se elimina el valor 30 hardcodeado y la aplicabilidad contradictoria; queda como muros internos de carga.
+      (b) 3.6 Clasificacion: sistema NL/SfB sustituido por GuBIMclass; aplicabilidad de GlobalId a IfcElement (el MEI dice 'cada objeto').
+      (c) 3.3 Niveles: enumeracion cerrada sustituida por patron de formato del MEI (codigo ordenable + descripcion; entreplantas con sufijo de letra; tejado/azotea).
+      (d) 4.1 Espacios: LongName sustituido por ObjectType (lo que pide el MEI); las cantidades pasan a opcionales y a spec separada (diagnosticabilidad).
+      (e) 4.7.1 Material: aplicabilidad de GlobalId a IfcElement.
+      Eliminadas las referencias al entorno neerlandes (NL/SfB). Specs 3.4, 3.5, 4.6, 4.7.2 y 4.8 sin cambios estructurales.-->
+  <!--Rev S3-0300 (2026-06-01): corregido el atributo cardinality vacio en las specs 4.3/4.4/4.5/4.7.2 para validez de esquema IDS 1.0.-->
+  <ids:info>
+    <ids:title>BSSP-ES-Control básico MEI 2.0</ids:title>
+    <ids:description>Ejemplo de IDS para la validación de modelos según el Manual de Entrega de Información - Edificación (MEI) de buildingSMART Spain. Comprueba la PRESENCIA de la información mínima; los valores concretos (códigos de clasificación, nomenclatura de niveles, resistencias al fuego, materiales aprobados) son responsabilidad del Requeridor de Información de cada proyecto.</ids:description>
+    <ids:author>info@buildingsmart.es</ids:author>
+    <ids:date>2026-07-10</ids:date>
+    <ids:purpose>Especifica un grupo de especificaciones que deben cumplir los modelos IFC según el MEI básico.</ids:purpose>
+  </ids:info>
+  <ids:specifications>
+    <ids:specification ifcVersion="IFC4" name="(3.3) Ordenación y denominación de los niveles del edificio" description="El MEI exige un nombre de nivel ordenable numéricamente y complementado con una descripción textual. Formato: [código][letra de entreplanta opcional] [descripción]. Entreplantas: sufijo a, b, c. Última planta: 'tejado' o 'azotea'. Ejemplos: '01 primera planta', '01a entreplanta', '-01 sótano'. Ajuste el patrón a la convención de niveles de su PEB si procede.">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <ids:simpleValue>IFCBUILDINGSTOREY</ids:simpleValue>
+          </ids:name>
+        </ids:entity>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:attribute cardinality="required">
+          <ids:name>
+            <ids:simpleValue>Name</ids:simpleValue>
+          </ids:name>
+          <ids:value>
+            <xs:restriction base="xs:string">
+              <xs:pattern value="(-?\d+[a-zA-Z]? .+|[Tt]ejado|[Aa]zotea)" />
+            </xs:restriction>
+          </ids:value>
+        </ids:attribute>
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(3.4) Uso correcto de las Entidades" description="Es importante seleccionar la categoría IFC más adecuada para tus elementos e intentar evitar el uso de IfcBuildingElementProxy siempre que sea posible.">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <ids:simpleValue>IFCBUILDINGELEMENTPROXY</ids:simpleValue>
+          </ids:name>
+        </ids:entity>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:attribute cardinality="required">
+          <ids:name>
+            <ids:simpleValue>GlobalId</ids:simpleValue>
+          </ids:name>
+          <ids:value>
+            <ids:simpleValue>?</ids:simpleValue>
+          </ids:value>
+        </ids:attribute>
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(3.5) Estructura y denominación" description="Asegúrate de asignar Nombres coherentes a tus componentes">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <ids:simpleValue>IFCDOOR</ids:simpleValue>
+          </ids:name>
+        </ids:entity>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:attribute cardinality="required">
+          <ids:name>
+            <ids:simpleValue>Name</ids:simpleValue>
+          </ids:name>
+          <ids:value>
+            <ids:simpleValue>Type ??.*</ids:simpleValue>
+          </ids:value>
+        </ids:attribute>
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(3.6) Sistema de clasificación" description="Asigna a cada objeto un código de clasificación. Para edificación, buildingSMART Spain recomienda GuBIMclass. Si tu proyecto usa otro sistema (Uniclass, etc.), sustituye el nombre del sistema.">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="IFCWALL" />
+              <xs:enumeration value="IFCWALLSTANDARDCASE" />
+              <xs:enumeration value="IFCSLAB" />
+              <xs:enumeration value="IFCBEAM" />
+              <xs:enumeration value="IFCCOLUMN" />
+              <xs:enumeration value="IFCMEMBER" />
+              <xs:enumeration value="IFCPLATE" />
+              <xs:enumeration value="IFCDOOR" />
+              <xs:enumeration value="IFCWINDOW" />
+              <xs:enumeration value="IFCCOVERING" />
+              <xs:enumeration value="IFCROOF" />
+              <xs:enumeration value="IFCSTAIR" />
+              <xs:enumeration value="IFCSTAIRFLIGHT" />
+              <xs:enumeration value="IFCRAMP" />
+              <xs:enumeration value="IFCRAMPFLIGHT" />
+              <xs:enumeration value="IFCRAILING" />
+              <xs:enumeration value="IFCFOOTING" />
+              <xs:enumeration value="IFCPILE" />
+              <xs:enumeration value="IFCCURTAINWALL" />
+              <xs:enumeration value="IFCBUILDINGELEMENTPROXY" />
+            </xs:restriction>
+          </ids:name>
+        </ids:entity>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:classification cardinality="required">
+          <ids:system>
+            <ids:simpleValue>GuBIMclass</ids:simpleValue>
+          </ids:system>
+        </ids:classification>
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(4.1) Espacios - denominación" description="Según el MEI, un espacio tiene un nombre (Name) y un tipo (ObjectType). Ejemplo: Name = 'sala de estar', ObjectType = 'espacio habitable'.">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <ids:simpleValue>IFCSPACE</ids:simpleValue>
+          </ids:name>
+        </ids:entity>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:attribute cardinality="required">
+          <ids:name>
+            <ids:simpleValue>Name</ids:simpleValue>
+          </ids:name>
+        </ids:attribute>
+        <ids:attribute cardinality="required">
+          <ids:name>
+            <ids:simpleValue>ObjectType</ids:simpleValue>
+          </ids:name>
+        </ids:attribute>
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(4.1) Espacios - cantidades para mediciones (opcional)" description="Cantidades base del espacio, útiles para mediciones. No forma parte del mínimo del MEI; se deja como opcional según el uso de cada proyecto.">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <ids:simpleValue>IFCSPACE</ids:simpleValue>
+          </ids:name>
+        </ids:entity>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:property cardinality="optional" dataType="IFCREAL">
+          <ids:propertySet>
+            <ids:simpleValue>Qto_SpaceBaseQuantities</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>Height</ids:simpleValue>
+          </ids:baseName>
+        </ids:property>
+        <ids:property cardinality="optional" dataType="IFCREAL">
+          <ids:propertySet>
+            <ids:simpleValue>Qto_SpaceBaseQuantities</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>GrossVolume</ids:simpleValue>
+          </ids:baseName>
+        </ids:property>
+        <ids:property cardinality="optional" dataType="IFCREAL">
+          <ids:propertySet>
+            <ids:simpleValue>Qto_SpaceBaseQuantities</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>GrossFloorArea</ids:simpleValue>
+          </ids:baseName>
+        </ids:property>
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(4.3) Carga portante / Carga no portante" description="Asigna la propiedad LoadBearing [TRUE/FALSE] a los componentes estructurales. El MEI la requiere preferentemente en IfcBeam, IfcColumn, IfcMember, IfcPlate, IfcSlab, IfcWall, IfcChimney, IfcFooting, IfcPile, IfcRamp, IfcRoof e IfcStair. Este ejemplo comprueba IfcWall; duplica la especificación para otras entidades usando su Pset común (Pset_BeamCommon, Pset_SlabCommon, etc.). El IDS comprueba la PRESENCIA del booleano, no su valor.">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <ids:simpleValue>IFCWALL</ids:simpleValue>
+          </ids:name>
+        </ids:entity>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:property cardinality="required" dataType="IFCBOOLEAN">
+          <ids:propertySet>
+            <ids:simpleValue>Pset_WallCommon</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>LoadBearing</ids:simpleValue>
+          </ids:baseName>
+        </ids:property>
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(4.4) Interno / Externo" description="Asigna la propiedad IsExternal [TRUE/FALSE]. El MEI la aplica siempre a suelos, paredes y techos (incluidas las aberturas); el aislamiento térmico es siempre TRUE. Criterio: la función espacial con la que linda el objeto. Este ejemplo comprueba IfcWall; duplica la especificación para suelos y techos. El IDS comprueba la PRESENCIA del booleano, no su valor.">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <ids:simpleValue>IFCWALL</ids:simpleValue>
+          </ids:name>
+        </ids:entity>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:property cardinality="required" dataType="IFCBOOLEAN">
+          <ids:propertySet>
+            <ids:simpleValue>Pset_WallCommon</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>IsExternal</ids:simpleValue>
+          </ids:baseName>
+        </ids:property>
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(4.5) Seguridad contra incendios" description="Comprueba la PRESENCIA de FireRating en los muros internos de carga (IsExternal = false y LoadBearing = true). El MEI no fija un valor concreto de resistencia: el valor lo determinan la normativa aplicable y el Requeridor de Información del proyecto.">
+      <ids:applicability minOccurs="0" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <ids:simpleValue>IFCWALL</ids:simpleValue>
+          </ids:name>
+        </ids:entity>
+        <ids:property dataType="IFCBOOLEAN">
+          <ids:propertySet>
+            <ids:simpleValue>Pset_WallCommon</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>IsExternal</ids:simpleValue>
+          </ids:baseName>
+          <ids:value>
+            <ids:simpleValue>false</ids:simpleValue>
+          </ids:value>
+        </ids:property>
+        <ids:property dataType="IFCBOOLEAN">
+          <ids:propertySet>
+            <ids:simpleValue>Pset_WallCommon</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>LoadBearing</ids:simpleValue>
+          </ids:baseName>
+          <ids:value>
+            <ids:simpleValue>true</ids:simpleValue>
+          </ids:value>
+        </ids:property>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:property cardinality="required" dataType="IFCLABEL">
+          <ids:propertySet>
+            <ids:simpleValue>Pset_WallCommon</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>FireRating</ids:simpleValue>
+          </ids:baseName>
+        </ids:property>
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(4.6) Propiedades físicas del edificio ( Transmisión térmica)" description="Comprueba la presencia de propiedades físicas del edificio en los elementos seleccionados. En este caso se examina si los valores de ThermalTransmittance (valor U) están definidos para los elementos de muros. Otros ejemplos comunes de propiedades físicas de edificios son AcousticRating (aislamiento acústico), SolarHeatGainTransmittance (valor SGGC) y Translucency (transmisión de luz).">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:property dataType="IFCTHERMALTRANSMITTANCEMEASURE">
+          <ids:propertySet>
+            <ids:simpleValue>Pset_WallCommon</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>ThermalTransmittance</ids:simpleValue>
+          </ids:baseName>
+        </ids:property>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:property cardinality="required" dataType="IFCTHERMALTRANSMITTANCEMEASURE">
+          <ids:propertySet>
+            <ids:simpleValue>Pset_WallCommon</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>ThermalTransmittance</ids:simpleValue>
+          </ids:baseName>
+        </ids:property>
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(4.7.1) Material" description="Identifica aquellos componentes que no tienen valores de Materiales asignados. El MEI exige asignar una descripción de material (IfcMaterial) a los objetos.">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="IFCWALL" />
+              <xs:enumeration value="IFCWALLSTANDARDCASE" />
+              <xs:enumeration value="IFCSLAB" />
+              <xs:enumeration value="IFCBEAM" />
+              <xs:enumeration value="IFCCOLUMN" />
+              <xs:enumeration value="IFCMEMBER" />
+              <xs:enumeration value="IFCPLATE" />
+              <xs:enumeration value="IFCDOOR" />
+              <xs:enumeration value="IFCWINDOW" />
+              <xs:enumeration value="IFCCOVERING" />
+              <xs:enumeration value="IFCROOF" />
+              <xs:enumeration value="IFCSTAIR" />
+              <xs:enumeration value="IFCSTAIRFLIGHT" />
+              <xs:enumeration value="IFCRAMP" />
+              <xs:enumeration value="IFCRAMPFLIGHT" />
+              <xs:enumeration value="IFCRAILING" />
+              <xs:enumeration value="IFCFOOTING" />
+              <xs:enumeration value="IFCPILE" />
+              <xs:enumeration value="IFCCURTAINWALL" />
+              <xs:enumeration value="IFCBUILDINGELEMENTPROXY" />
+            </xs:restriction>
+          </ids:name>
+        </ids:entity>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:material cardinality="required" />
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(4.7.2) Materiales específicos" description="Especifica cuáles son los materiales que deben tener los elementos seleccionados. Este ejemplo (project-specific, no es mínimo del MEI) indica una lista de materiales para elementos de muros de carga">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <ids:simpleValue>IFCWALL</ids:simpleValue>
+          </ids:name>
+        </ids:entity>
+        <ids:property dataType="IFCIDENTIFIER">
+          <ids:propertySet>
+            <ids:simpleValue>Pset_WallCommon</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>Reference</ids:simpleValue>
+          </ids:baseName>
+        </ids:property>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:material cardinality="required">
+          <ids:value>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Hormigón" />
+              <xs:enumeration value="Hormigón armado" />
+              <xs:enumeration value="Piedra caliza" />
+              <xs:enumeration value="Fábrica de ladrillo" />
+            </xs:restriction>
+          </ids:value>
+        </ids:material>
+      </ids:requirements>
+    </ids:specification>
+    <ids:specification ifcVersion="IFC4" name="(4.8) Propiedades específicas del proyecto" description="Determina si las propiedades personalizadas definidas por los requisitos de tu proyecto están presentes en los elementos seleccionados">
+      <ids:applicability minOccurs="1" maxOccurs="unbounded">
+        <ids:entity>
+          <ids:name>
+            <ids:simpleValue>IFCFLOWSEGMENT</ids:simpleValue>
+          </ids:name>
+        </ids:entity>
+      </ids:applicability>
+      <ids:requirements>
+        <ids:property cardinality="optional" dataType="IFCLABEL">
+          <ids:propertySet>
+            <ids:simpleValue>bSSp_Pset_Descripcion</ids:simpleValue>
+          </ids:propertySet>
+          <ids:baseName>
+            <ids:simpleValue>NombrePropiedadPersonalizada01</ids:simpleValue>
+          </ids:baseName>
+        </ids:property>
+      </ids:requirements>
+    </ids:specification>
+  </ids:specifications>
+</ids:ids>

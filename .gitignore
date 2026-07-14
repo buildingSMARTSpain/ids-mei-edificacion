@@ -1,0 +1,31 @@
+# Sistemas operativos
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+.Spotlight-V100
+.Trashes
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporales y copias de trabajo
+*.tmp
+*.bak
+*.log
+~$*
+
+# Salidas de validación generadas localmente (el repositorio publica solo la muestra oficial)
+*.json
+!package.json
+validation-output/
+reports/
+
+# Modelos IFC adicionales no publicados (solo se publica el modelo validado)
+model/*.ifc
+!model/20-900084_HabitatgesDotacionals_PE_ARQ_R24.ifc
