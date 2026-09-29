@@ -29,3 +29,4 @@ reports/
 # Modelos IFC adicionales no publicados (solo se publica el modelo validado)
 model/*.ifc
 !model/20-900084_HabitatgesDotacionals_PE_ARQ_R24.ifc
+.env
