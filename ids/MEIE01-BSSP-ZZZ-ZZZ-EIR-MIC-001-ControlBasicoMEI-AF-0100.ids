@@ -1,5 +1,6 @@
 <ids:ids xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://standards.buildingsmart.org/IDS http://standards.buildingsmart.org/IDS/1.0/ids.xsd" xmlns:ids="http://standards.buildingsmart.org/IDS">
   <!--IDS revisado, corregido y auditado por buildingSMART Spain.-->
+  <!--Rev AF-0100 (2026-07-15): publicación. Contenido idéntico a la revisión de producción S2-0500; el historial de producción se conserva archivado.-->
   <!--Rev S2-0500 (2026-07-10). Correcciones tras auditoria con IDS-Audit-tool oficial de bSI (8 errores en 0400):
       - Error 103 (x4): nombres de atributo en MAYUSCULAS corregidos a PascalCase de IFC4 (NAME->Name, GLOBALID->GlobalId, OBJECTTYPE->ObjectType) en specs 3.3, 3.4, 3.5, 4.1. Sin esta correccion, esas comprobaciones fallaban porque el atributo no existia con ese nombre.
       - Error 201 (x2): aplicabilidad IFCELEMENT (tipo abstracto, no expandido por el motor -> 0 objetos) sustituida por enumeracion de subtipos concretos en specs 3.6 (clasificacion) y 4.7.1 (material), que son el nucleo del MEI.
@@ -16,7 +17,7 @@
     <ids:title>BSSP-ES-Control básico MEI 2.0</ids:title>
     <ids:description>Ejemplo de IDS para la validación de modelos según el Manual de Entrega de Información - Edificación (MEI) de buildingSMART Spain. Comprueba la PRESENCIA de la información mínima; los valores concretos (códigos de clasificación, nomenclatura de niveles, resistencias al fuego, materiales aprobados) son responsabilidad del Requeridor de Información de cada proyecto.</ids:description>
     <ids:author>info@buildingsmart.es</ids:author>
-    <ids:date>2026-07-10</ids:date>
+    <ids:date>2026-07-15</ids:date>
     <ids:purpose>Especifica un grupo de especificaciones que deben cumplir los modelos IFC según el MEI básico.</ids:purpose>
   </ids:info>
   <ids:specifications>

@@ -39,10 +39,12 @@ La validación de valores concretos y requisitos geométricos es responsabilidad
 
 | Fichero | Descripción |
 |---|---|
-| `ids/MEIE01-BSSP-ZZZ-ZZZ-EIR-MIC-001-ControlBasicoMEI-S2-0500.ids` | Especificación IDS vigente (rev 0500). Pasa el [IDS Audit Tool oficial de buildingSMART](https://github.com/buildingSMART/IDS-Audit-tool) sin errores. |
-| `sample-validation/MEIE01-BSSP-ZZZ-ZZZ-INF-MIC-001-MuestraBCFValidacionMEI-S2-0200.bcf` | Muestra de resultados de validación en formato **BCF (BIM Collaboration Format)**, el estándar abierto de buildingSMART para intercambiar incidencias y comentarios sobre un modelo IFC. Se abre con cualquier visor compatible con BCF. |
-| `sample-validation/informe-validacion-visor-0500-ARQ.html` | Informe de validación en HTML, legible en cualquier navegador. |
+| `ids/MEIE01-BSSP-ZZZ-ZZZ-EIR-MIC-001-ControlBasicoMEI-AF-0100.ids` | Especificación IDS publicada (estado AF, rev 0100). Corresponde a la revisión de producción 0500. Pasa el [IDS Audit Tool oficial de buildingSMART](https://github.com/buildingSMART/IDS-Audit-tool) sin errores. |
+| `sample-validation/MEIE01-BSSP-ZZZ-ZZZ-INF-MIC-001-MuestraBCFValidacionMEI-AF-0100.bcf` | Muestra de resultados de validación en formato **BCF (BIM Collaboration Format)**, el estándar abierto de buildingSMART para intercambiar incidencias y comentarios sobre un modelo IFC. Se abre con cualquier visor compatible con BCF. |
+| `sample-validation/informe-validacion-visor-AF-0100-ARQ.html` | Informe de validación en HTML, legible en cualquier navegador. |
 | `model/20-900084_HabitatgesDotacionals_PE_ARQ_R24.ifc` | Modelo IFC de arquitectura usado para generar la muestra de validación (43 MB). Permite reproducir la validación de principio a fin. Cedido por el **Àrea Metropolitana de Barcelona (AMB)**. |
+
+> **Trazabilidad de versiones:** el fichero publicado `AF-0100` corresponde a la revisión de producción `0500`. El historial de producción (revisiones anteriores) se conserva archivado internamente por buildingSMART Spain.
 
 > **Nota sobre la muestra de validación:** al igual que las [muestras de test de la comunidad buildingSMART](https://github.com/buildingsmart-community/Community-Sample-Test-Files), estos ficheros son **ejemplos ilustrativos**, no una validación oficial ni certificación de cumplimiento del MEI. El resultado depende del modelo IFC concreto que se valide.
 >
@@ -50,7 +52,9 @@ La validación de valores concretos y requisitos geométricos es responsabilidad
 
 ### Reproducibilidad
 
-El informe y el BCF de esta muestra se generaron con un motor de validación IDS basado en **[IFC Lite](https://ifclite.dev)** (proyecto de código abierto de LTplus-AG, licencia MPL-2.0), en la versión `@ifc-lite/ids` 1.15.25. Código fuente: [github.com/LTplus-AG/ifc-lite](https://github.com/LTplus-AG/ifc-lite).
+El informe HTML se generó con un motor de validación IDS basado en **[IFC Lite](https://ifclite.dev)** (proyecto de código abierto de LTplus-AG, licencia MPL-2.0), en la versión `@ifc-lite/ids` 3.1.0. Código fuente: [github.com/LTplus-AG/ifc-lite](https://github.com/LTplus-AG/ifc-lite). El informe recoge el resultado completo de la validación.
+
+La muestra BCF es una selección de casos: un elemento por especificación, con su vista y su captura. Se generó en julio de 2026 con una versión anterior del mismo motor (`@ifc-lite/ids` 1.15.25) y no recoge todas las especificaciones que fallan; en particular, no incluye la (4.1) Espacios - denominación, que la versión anterior del motor daba por cumplida sin que el modelo informe `ObjectType` en los espacios.
 
 Se indica el motor y su versión porque distintas implementaciones del estándar IDS pueden diferir en la interpretación de alguna faceta. Si reproduces la validación con otra herramienta compatible y obtienes resultados distintos, abre un issue: es información útil tanto para este IDS como para el ecosistema de herramientas.
 
